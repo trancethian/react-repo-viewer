@@ -1,12 +1,8 @@
-const plugin = require('tailwindcss/plugin');
+import plugin from 'tailwindcss/plugin';
+import withMT from '@material-tailwind/react/utils/withMT';
 
-export default {
-  content: [
-    './index.html',
-    './src/*.tsx',
-    './src/components/*.{jsx,tsx}',
-    './src/pages/*.{jsx,tsx}',
-  ],
+export default withMT({
+  content: ['./index.html', './src/*.tsx', './src/components/**/*.{jsx,tsx}'],
   theme: {
     extend: {
       textShadow: {
@@ -28,4 +24,4 @@ export default {
       );
     }),
   ],
-};
+});

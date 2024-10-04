@@ -17,6 +17,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@material-tailwind/react": "^2.1.10",
     "@reduxjs/toolkit": "^2.2.1",
     "axios": "^1.7.7",
     "react": "^18.2.0",
@@ -29,7 +30,7 @@
     "@babel/preset-react": "^7.23.3",
     "@testing-library/react": "^14.2.1",
     "@types/jest": "^29.5.12",
-    "@types/react": "^18.2.64",
+    "@types/react": "^18.2.42",
     "@types/react-dom": "^18.2.21",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
