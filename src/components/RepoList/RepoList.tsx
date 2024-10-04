@@ -25,8 +25,8 @@ const RepoList = () => {
   return (
     <div>
       <h1 className="text-shadow-lg shadow-black">React Community Public Repos</h1>
-      <div className="w-full max-w-screen-xl mx-auto px-6">
-        <div className="flex justify-center p-4 px-3 py-10">
+      <div className="w-full max-w-screen-2xl mx-auto">
+        <div className="flex justify-center py-10">
           <div className="w-full max-w-md">
             <div className="bg-white shadow-md rounded-lg px-3 py-2 mb-4">
               {/* <div className="block text-gray-700 text-lg font-semibold py-2 px-2">Item List</div> */}
