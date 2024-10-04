@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IGitRepo } from '../../common/interfaces';
+import { IGitRepo, IGitSession } from '../../common/interfaces';
 
 interface IGitRepoState {
+  session: IGitSession | null;
   repositories: IGitRepo[];
   loading: boolean;
   error: string | null;
@@ -13,6 +14,7 @@ export interface IGitRepoFetchPayload {
 }
 
 const initialState: IGitRepoState = {
+  session: null,
   repositories: [],
   loading: false,
   error: null,
@@ -28,8 +30,12 @@ export const gitRepoSlice = createSlice({
       state.error = null;
       state.page = action.payload.page;
     },
-    fetchRepositoriesSuccess(state, action: PayloadAction<{ repositories: IGitRepo[] }>) {
+    fetchRepositoriesSuccess(
+      state,
+      action: PayloadAction<{ session: IGitSession | null; repositories: IGitRepo[] }>,
+    ) {
       state.loading = false;
+      state.session = action.payload.session;
       state.repositories = action.payload.repositories;
       state.error = null;
     },
