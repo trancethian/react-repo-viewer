@@ -1,8 +1,15 @@
+import { useEffect, useState } from 'react';
+
+import { IGitSession } from '@/common/interfaces';
 import { useAppSelector } from '@/redux/hooks';
 import { RootState } from '@/redux/store';
 import { Progress, Typography } from '@material-tailwind/react';
-import { useEffect, useState } from 'react';
+
 import GitSessionInfoPopover from './GitSessionInfoPopover';
+
+interface ISessionInfo extends IGitSession {
+  rateResetsOn: Date | null;
+}
 
 export function ProgressLabelOutside() {
   return (
@@ -22,17 +29,13 @@ export function ProgressLabelOutside() {
 
 const GitSessionInfo = () => {
   const { session } = useAppSelector((state: RootState) => state.gitRepo);
-  //   const session: IGitSession = {
-  //     rateLimit: 60,
-  //     rateRemaining: 30,
-  //     rateResetTime: new Date(1370001284000),
-  //   };
-  const [sessionInfo, setSessionInfo] = useState<any>(session);
+  const [sessionInfo, setSessionInfo] = useState<ISessionInfo | null>();
+
   useEffect(() => {
     if (session) {
       setSessionInfo({
         ...session,
-        rateResetTime: session.rateResetTime ? new Date(session.rateResetTime * 1000) : null,
+        rateResetsOn: session.rateResetTime ? new Date(session.rateResetTime * 1000) : null,
       });
     } else {
       setSessionInfo(null);
@@ -42,7 +45,7 @@ const GitSessionInfo = () => {
   return (
     sessionInfo && (
       <div className="w-full">
-        <div className="mb-2 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="mb-2 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <GitSessionInfoPopover {...sessionInfo}>
             <div className="flex flex-row">
               <Typography variant="h6">Rate Limit</Typography>
@@ -52,11 +55,13 @@ const GitSessionInfo = () => {
               </svg>
             </div>
           </GitSessionInfoPopover>
-          <div>
-            <Typography variant="h6">
-              {sessionInfo.rateLimit - sessionInfo.rateRemaining} / {sessionInfo.rateLimit}
-            </Typography>
-          </div>
+          {sessionInfo.rateLimit && sessionInfo.rateRemaining && (
+            <div>
+              <Typography variant="h6">
+                {sessionInfo.rateLimit - sessionInfo.rateRemaining} / {sessionInfo.rateLimit}
+              </Typography>
+            </div>
+          )}
         </div>
         {sessionInfo.rateLimit && sessionInfo.rateRemaining && (
           <Progress

@@ -1,11 +1,12 @@
 import { useState } from 'react';
+
 import {
-  Popover as MTPopover,
-  PopoverHandler,
-  PopoverContent,
   Chip,
-  Typography,
+  Popover as MTPopover,
+  PopoverContent,
+  PopoverHandler,
   PopoverProps,
+  Typography,
 } from '@material-tailwind/react';
 
 export default function RepoListItemPopover({ children }: PopoverProps) {
@@ -36,14 +37,14 @@ export default function RepoListItemPopover({ children }: PopoverProps) {
               className="rounded-full px-2 py-1 font-medium capitalize tracking-wide"
             />
           </div>
-          <Typography variant="small" color="gray" className="font-normal text-blue-gray-500">
+          <Typography variant="small" color="gray" className="text-blue-gray-500 font-normal">
             @material-tailwind is an easy-to-use components library for Tailwind CSS and Material
             Design.
           </Typography>
           <div className="mt-4 flex items-center gap-5">
             <div className="flex items-center gap-1">
-              <span className="h-3 w-3 rounded-full bg-blue-700" />
-              <Typography color="gray" className="text-xs font-medium text-blue-gray-500">
+              <span className="size-3 rounded-full bg-blue-700" />
+              <Typography color="gray" className="text-blue-gray-500 text-xs font-medium">
                 TypeScript
               </Typography>
             </div>
@@ -52,7 +53,7 @@ export default function RepoListItemPopover({ children }: PopoverProps) {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                className="-mt-0.5 h-4 w-4 text-yellow-700"
+                className="-mt-0.5 size-4 text-yellow-700"
               >
                 <path
                   fillRule="evenodd"
@@ -60,7 +61,7 @@ export default function RepoListItemPopover({ children }: PopoverProps) {
                   clipRule="evenodd"
                 />
               </svg>
-              <Typography color="gray" className="text-xs font-medium text-blue-gray-500">
+              <Typography color="gray" className="text-blue-gray-500 text-xs font-medium">
                 1,480
               </Typography>
             </div>
@@ -69,7 +70,7 @@ export default function RepoListItemPopover({ children }: PopoverProps) {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                className="-mt-px h-4 w-4 text-green-500"
+                className="-mt-px size-4 text-green-500"
               >
                 <path
                   fillRule="evenodd"
@@ -77,7 +78,7 @@ export default function RepoListItemPopover({ children }: PopoverProps) {
                   clipRule="evenodd"
                 />
               </svg>
-              <Typography color="gray" className="text-xs font-medium text-blue-gray-500">
+              <Typography color="gray" className="text-blue-gray-500 text-xs font-medium">
                 Verified
               </Typography>
             </div>

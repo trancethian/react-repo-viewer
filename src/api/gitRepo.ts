@@ -1,4 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
+
 import { IGitRepo, IGitSession } from '../common/interfaces';
 
 export interface IFetchGitReposResponse {
@@ -6,13 +7,24 @@ export interface IFetchGitReposResponse {
   repositories: IGitRepo[];
 }
 
+interface IFetchPublicReposResponseHeaders {
+  test: number;
+  'x-ratelimit-limit': number;
+  'x-ratelimit-remaining': number;
+  'x-ratelimit-reset': number;
+}
+
 export const fetchPublicRepos = async (page = 1): Promise<IFetchGitReposResponse> => {
-  const response: AxiosResponse = await axios.get('https://api.github.com/orgs/reactjs/repos', {
-    headers: {
-      Accept: 'application/vnd.github+json',
+  const response: { data: IGitRepo[]; headers: IFetchPublicReposResponseHeaders } = await axios.get(
+    'https://api.github.com/orgs/reactjs/repos',
+    {
+      headers: {
+        Accept: 'application/vnd.github+json',
+      },
+      params: { type: 'public', page },
     },
-    params: { type: 'public', page },
-  });
+  );
+  response.headers;
   const session: IGitSession = {
     rateLimit: response.headers['x-ratelimit-limit'],
     rateRemaining: response.headers['x-ratelimit-remaining'],

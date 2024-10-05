@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { IGitRepo, IGitSession } from '../../common/interfaces';
 
 interface IGitRepoState {

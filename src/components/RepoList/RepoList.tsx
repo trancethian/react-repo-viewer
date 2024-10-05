@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { useCallback, useEffect } from 'react';
+
 import { fetchRepositoriesRequest } from '../../redux/gitRepo/slice';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { RootState } from '../../redux/store';
+
 import RepoListItem from './RepoListItem';
 
 const RepoList = () => {
@@ -11,13 +13,16 @@ const RepoList = () => {
     (state: RootState) => state.gitRepo,
   );
 
-  const loadRepos = (page: number) => {
-    dispatch(fetchRepositoriesRequest({ page }));
-  };
+  const loadRepos = useCallback(
+    (page: number) => {
+      dispatch(fetchRepositoriesRequest({ page }));
+    },
+    [dispatch],
+  );
 
   useEffect(() => {
     loadRepos(page);
-  }, [dispatch, page]);
+  }, [dispatch, loadRepos, page]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -25,15 +30,15 @@ const RepoList = () => {
   return (
     <div>
       <h1 className="text-shadow-lg shadow-black">React Community Public Repos</h1>
-      <div className="w-full max-w-screen-2xl mx-auto">
+      <div className="mx-auto w-full max-w-screen-2xl">
         <div className="flex justify-center py-10">
           <div className="w-full max-w-md">
-            <div className="bg-white shadow-md rounded-lg px-3 py-2 mb-4">
+            <div className="mb-4 rounded-lg bg-white px-3 py-2 shadow-md">
               {/* <div className="block text-gray-700 text-lg font-semibold py-2 px-2">Item List</div> */}
-              <div className="flex items-center mt-2 bg-gray-200 rounded-md">
+              <div className="mt-2 flex items-center rounded-md bg-gray-200">
                 <div className="pl-2">
                   <svg
-                    className="fill-current text-gray-500 w-6 h-6"
+                    className="size-6 fill-current text-gray-500"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                   >
@@ -44,7 +49,7 @@ const RepoList = () => {
                   </svg>
                 </div>
                 <input
-                  className="w-full rounded-md bg-gray-200 text-gray-700 leading-tight focus:outline-none py-2 px-2"
+                  className="w-full rounded-md bg-gray-200 p-2 leading-tight text-gray-700 focus:outline-none"
                   id="search"
                   type="text"
                   placeholder="Search repo name"

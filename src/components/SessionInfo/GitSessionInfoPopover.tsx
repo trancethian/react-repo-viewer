@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
+
+import gitHubLogo from '@/assets/github-mark.svg';
+import { IGitSession } from '@/common/interfaces';
 import {
   Popover,
-  PopoverHandler,
   PopoverContent,
-  Typography,
+  PopoverHandler,
   PopoverProps,
+  Typography,
 } from '@material-tailwind/react';
-import { IGitSession } from '@/common/interfaces';
-import gitHubLogo from '@/assets/github-mark.svg';
 
 export default function GitSessionInfoPopover({
   children,
@@ -44,14 +45,14 @@ export default function GitSessionInfoPopover({
             >
               Rate Limit
             </Typography>
-            <img src={gitHubLogo} className="h-6 w-6" alt="GitHub logo" />
+            <img src={gitHubLogo} className="size-6" alt="GitHub logo" />
           </div>
-          <Typography variant="h6" color="gray" className="font-normal text-blue-gray-500">
+          <Typography variant="h6" color="gray" className="text-blue-gray-500 font-normal">
             GitHub limits the number of REST API requests that you can make within a specific amount
             of time. Read more about it{' '}
             <a
               href="https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28"
-              target="_blank"
+              target="_blank" rel="noreferrer"
             >
               here
             </a>
@@ -60,11 +61,11 @@ export default function GitSessionInfoPopover({
           <div className="mt-4 flex flex-col items-start gap-5">
             {rateResetsOn && (
               <div className="flex items-center gap-1">
-                <span className="h-3 w-3 rounded-full bg-blue-700" />
+                <span className="size-3 rounded-full bg-blue-700" />
                 <Typography
                   variant="h6"
                   color="gray"
-                  className="text-xs font-medium text-blue-gray-500"
+                  className="text-blue-gray-500 text-xs font-medium"
                 >
                   Your limit will reset on {rateResetsOn.toLocaleString()}.
                 </Typography>

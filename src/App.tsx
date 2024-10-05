@@ -1,9 +1,9 @@
 import reactLogo from './assets/react.svg';
 import viteLogo from './assets/vite.svg';
 import RepoList from './components/RepoList/RepoList';
+import SessionInfo from './components/SessionInfo/GitSessionInfo';
 
 import './App.css';
-import SessionInfo from './components/SessionInfo/GitSessionInfo';
 
 function App() {
   return (

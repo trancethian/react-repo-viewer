@@ -1,4 +1,5 @@
 import { IGitRepo } from '../../common/interfaces';
+
 import RepoListItemPopover from './RepoListItemPopover';
 
 interface RepoListItemProps {
@@ -7,17 +8,17 @@ interface RepoListItemProps {
 export default function RepoListItem({ repo }: RepoListItemProps) {
   return (
     <RepoListItemPopover>
-      <div className="flex justify-start cursor-pointer text-gray-700 hover:text-blue-400 hover:bg-blue-100 rounded-md px-2 py-2 my-2">
-        <span className="bg-green-400 h-2 w-2 m-2 rounded-full"></span>
+      <div className="my-2 flex cursor-pointer justify-start rounded-md p-2 text-gray-700 hover:bg-blue-100 hover:text-blue-400">
+        <span className="m-2 size-2 rounded-full bg-green-400"></span>
         <a
-          className="flex-grow font-medium px-2"
+          className="grow px-2 font-medium"
           href={repo.html_url}
           target="_blank"
           rel="noopener noreferrer"
         >
           {repo.name}
         </a>
-        <div className="text-sm font-normal text-gray-500 tracking-wide">{repo.language}</div>
+        <div className="text-sm font-normal tracking-wide text-gray-500">{repo.language}</div>
       </div>
     </RepoListItemPopover>
   );
