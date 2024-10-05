@@ -52,7 +52,8 @@ export default function GitSessionInfoPopover({
             of time. Read more about it{' '}
             <a
               href="https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28"
-              target="_blank" rel="noreferrer"
+              target="_blank"
+              rel="noreferrer"
             >
               here
             </a>
