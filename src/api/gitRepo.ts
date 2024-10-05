@@ -9,10 +9,10 @@ export interface IFetchGitReposParams {
 export interface IFetchPublicReposResponse {
   session: IGitSession | null;
   repositories: IGitRepo[];
+  totalCount: number;
 }
 
 interface IFetchPublicReposResponseHeaders {
-  test: number;
   'x-ratelimit-limit': number;
   'x-ratelimit-remaining': number;
   'x-ratelimit-reset': number;
@@ -26,12 +26,11 @@ export const fetchPublicRepos = async (
   if (params.searchName) {
     query += ` ${params.searchName}`;
   }
-
   const queryParams = {
     q: query,
     sort: 'stars',
     order: 'desc',
-    per_page: 10,
+    per_page: 20,
     page: params.page,
   };
   const response: {
@@ -43,15 +42,16 @@ export const fetchPublicRepos = async (
     },
     params: queryParams,
   });
-  response.headers;
+
   const session: IGitSession = {
     rateLimit: response.headers['x-ratelimit-limit'],
     rateRemaining: response.headers['x-ratelimit-remaining'],
     rateResetTime: response.headers['x-ratelimit-reset'],
   };
-  console.log('response.headers', response.headers);
+
   return {
     session: session,
     repositories: response.data.items,
+    totalCount: response.data.total_count,
   };
 };

@@ -6,20 +6,22 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { fetchPublicRepos, IFetchPublicReposResponse } from '../../api/gitRepo';
 
 import {
-  fetchRepositoriesByName,
   fetchRepositoriesFailure,
   fetchRepositoriesRequest,
   fetchRepositoriesSuccess,
   IGitRepoFetchPayload,
+  setFetchRepositoriesLoading,
 } from './slice';
 
 function* fetchReposSaga(action: PayloadAction<IGitRepoFetchPayload>) {
   try {
+    yield put(setFetchRepositoriesLoading(true));
+
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { session, repositories }: IFetchPublicReposResponse = yield call(fetchPublicRepos, {
+    const response: IFetchPublicReposResponse = yield call(fetchPublicRepos, {
       ...action.payload,
     });
-    yield put(fetchRepositoriesSuccess({ session, repositories }));
+    yield put(fetchRepositoriesSuccess(response));
   } catch (error) {
     let errMsg = 'Failed to fetch repositories';
 
@@ -36,6 +38,5 @@ function* debouncedFetchReposSaga(action: PayloadAction<IGitRepoFetchPayload>) {
 }
 
 export default function* gitRepoSagas() {
-  yield takeLatest(fetchRepositoriesRequest.type, fetchReposSaga);
-  yield takeLatest(fetchRepositoriesByName.type, debouncedFetchReposSaga);
+  yield takeLatest(fetchRepositoriesRequest.type, debouncedFetchReposSaga);
 }

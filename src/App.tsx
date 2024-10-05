@@ -1,3 +1,5 @@
+import { Typography } from '@material-tailwind/react';
+
 import reactLogo from './assets/react.svg';
 import RepoList from './components/RepoList/RepoList';
 import SessionInfo from './components/SessionInfo/GitSessionInfo';
@@ -17,9 +19,18 @@ function App() {
           <SessionInfo />
         </div>
       </div>
-      <div>
-        <RepoList />
-      </div>
+      <Typography className="text-white [text-shadow:_0_4px_8px_rgb(0_0_0_/_0.8)]" variant="h1">
+        <a
+          className="hover:underline"
+          href="https://github.com/reactjs"
+          target="_blank"
+          rel="noreferrer"
+        >
+          React
+        </a>{' '}
+        Open Source Repositories
+      </Typography>
+      <RepoList />
     </>
   );
 }

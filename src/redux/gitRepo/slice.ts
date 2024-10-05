@@ -1,3 +1,4 @@
+import { IFetchPublicReposResponse } from '@/api/gitRepo';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IGitRepo, IGitSession } from '../../common/interfaces';
@@ -9,6 +10,7 @@ interface IGitRepoState {
   loading: boolean;
   error: string | null;
   page: number;
+  hasMore: boolean;
   searchName: string;
 }
 
@@ -22,7 +24,8 @@ const initialState: IGitRepoState = {
   repositories: [],
   loading: false,
   error: null,
-  page: 1, // Default page
+  page: 1,
+  hasMore: false,
   searchName: '',
 };
 
@@ -32,22 +35,27 @@ export const gitRepoSlice = createSlice({
   name: 'gitRepo',
   initialState,
   reducers: {
-    fetchRepositoriesRequest(state, action: PayloadAction<{ page: number }>) {
-      state.loading = true;
+    setFetchRepositoriesLoading(state, action: PayloadAction<boolean>) {
+      state.loading = action.payload;
+    },
+    fetchRepositoriesRequest(state, action: PayloadAction<{ searchName: string; page: number }>) {
+      if (state.searchName != action.payload.searchName) {
+        state.repositories = [];
+      }
+      if (state.page != action.payload.page) {
+        state.loading = true;
+      }
       state.error = null;
       state.page = action.payload.page;
-    },
-    fetchRepositoriesByName(state, action: PayloadAction<{ searchName: string }>) {
-      state.error = null;
       state.searchName = action.payload.searchName;
     },
-    fetchRepositoriesSuccess(
-      state,
-      action: PayloadAction<{ session: IGitSession | null; repositories: IGitRepo[] }>,
-    ) {
+    fetchRepositoriesSuccess(state, action: PayloadAction<IFetchPublicReposResponse>) {
+      const newRepositories = state.repositories.concat(action.payload.repositories);
       state.loading = false;
       state.session = action.payload.session;
-      state.repositories = action.payload.repositories;
+      state.repositories = newRepositories;
+      state.hasMore =
+        newRepositories.length > 0 && newRepositories.length < action.payload.totalCount;
       state.error = null;
     },
     fetchRepositoriesFailure(state, action: PayloadAction<{ error: string }>) {
@@ -58,8 +66,8 @@ export const gitRepoSlice = createSlice({
 });
 
 export const {
+  setFetchRepositoriesLoading,
   fetchRepositoriesRequest,
-  fetchRepositoriesByName,
   fetchRepositoriesSuccess,
   fetchRepositoriesFailure,
 } = gitRepoSlice.actions;
