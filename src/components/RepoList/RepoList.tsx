@@ -24,14 +24,18 @@ const RepoList = () => {
       setSearchRepoName(newValue);
 
       if (newValue.length > 2) {
-        dispatch(fetchRepositoriesRequest({ searchName: e.target.value, page }));
+        dispatch(fetchRepositoriesRequest({ searchName: e.target.value, page: 1 }));
       }
     },
-    [dispatch, page],
+    [dispatch],
   );
   const handleScroll = useCallback(
     (e: UIEvent<HTMLDivElement>) => {
-      if (hasMore && !loading && e.currentTarget.scrollTop >= e.currentTarget.clientHeight * 0.9) {
+      if (
+        hasMore &&
+        !loading &&
+        e.currentTarget.scrollTop == e.currentTarget.scrollHeight - e.currentTarget.offsetHeight
+      ) {
         dispatch(fetchRepositoriesRequest({ searchName: searchRepoName, page: page + 1 }));
       }
     },
@@ -95,7 +99,7 @@ const RepoList = () => {
               )}
               {loading && <RepoListItemLoader />}
             </div>
-            {!loading && hasMore && (
+            {!loading && repositories.length > 0 && hasMore && (
               <div className="animate-bounce sticky bottom-0 flex justify-center">
                 <img src={arrowDownIcon} className="size-6" alt="React logo" />
               </div>

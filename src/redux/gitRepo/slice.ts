@@ -41,6 +41,7 @@ export const gitRepoSlice = createSlice({
     fetchRepositoriesRequest(state, action: PayloadAction<{ searchName: string; page: number }>) {
       if (state.searchName != action.payload.searchName) {
         state.repositories = [];
+        state.page = 1;
       }
       if (state.page != action.payload.page) {
         state.loading = true;
@@ -60,6 +61,8 @@ export const gitRepoSlice = createSlice({
     },
     fetchRepositoriesFailure(state, action: PayloadAction<{ error: string }>) {
       state.loading = false;
+      state.hasMore = false;
+      state.repositories = [];
       state.error = action.payload.error;
     },
   },
