@@ -1,11 +1,12 @@
 // sagas.js
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, delay, put, takeLatest } from 'redux-saga/effects';
 
 import { PayloadAction } from '@reduxjs/toolkit';
 
-import { fetchPublicRepos, IFetchGitReposResponse } from '../../api/gitRepo';
+import { fetchPublicRepos, IFetchPublicReposResponse } from '../../api/gitRepo';
 
 import {
+  fetchRepositoriesByName,
   fetchRepositoriesFailure,
   fetchRepositoriesRequest,
   fetchRepositoriesSuccess,
@@ -15,10 +16,9 @@ import {
 function* fetchReposSaga(action: PayloadAction<IGitRepoFetchPayload>) {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { session, repositories }: IFetchGitReposResponse = yield call(
-      fetchPublicRepos,
-      action.payload.page,
-    );
+    const { session, repositories }: IFetchPublicReposResponse = yield call(fetchPublicRepos, {
+      ...action.payload,
+    });
     yield put(fetchRepositoriesSuccess({ session, repositories }));
   } catch (error) {
     let errMsg = 'Failed to fetch repositories';
@@ -30,6 +30,12 @@ function* fetchReposSaga(action: PayloadAction<IGitRepoFetchPayload>) {
   }
 }
 
+function* debouncedFetchReposSaga(action: PayloadAction<IGitRepoFetchPayload>) {
+  yield delay(1000);
+  yield fetchReposSaga(action);
+}
+
 export default function* gitRepoSagas() {
   yield takeLatest(fetchRepositoriesRequest.type, fetchReposSaga);
+  yield takeLatest(fetchRepositoriesByName.type, debouncedFetchReposSaga);
 }

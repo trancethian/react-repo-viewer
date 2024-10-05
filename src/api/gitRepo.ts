@@ -2,7 +2,11 @@ import axios from 'axios';
 
 import { IGitRepo, IGitSession } from '../common/interfaces';
 
-export interface IFetchGitReposResponse {
+export interface IFetchGitReposParams {
+  page: number;
+  searchName: string;
+}
+export interface IFetchPublicReposResponse {
   session: IGitSession | null;
   repositories: IGitRepo[];
 }
@@ -14,16 +18,31 @@ interface IFetchPublicReposResponseHeaders {
   'x-ratelimit-reset': number;
 }
 
-export const fetchPublicRepos = async (page = 1): Promise<IFetchGitReposResponse> => {
-  const response: { data: IGitRepo[]; headers: IFetchPublicReposResponseHeaders } = await axios.get(
-    'https://api.github.com/orgs/reactjs/repos',
-    {
-      headers: {
-        Accept: 'application/vnd.github+json',
-      },
-      params: { type: 'public', page },
+export const fetchPublicRepos = async (
+  params: IFetchGitReposParams,
+): Promise<IFetchPublicReposResponse> => {
+  let query = 'org:reactjs';
+
+  if (params.searchName) {
+    query += ` ${params.searchName}`;
+  }
+
+  const queryParams = {
+    q: query,
+    sort: 'stars',
+    order: 'desc',
+    per_page: 10,
+    page: params.page,
+  };
+  const response: {
+    data: { total_count: number; items: IGitRepo[] };
+    headers: IFetchPublicReposResponseHeaders;
+  } = await axios.get('https://api.github.com/search/repositories', {
+    headers: {
+      Accept: 'application/vnd.github+json',
     },
-  );
+    params: queryParams,
+  });
   response.headers;
   const session: IGitSession = {
     rateLimit: response.headers['x-ratelimit-limit'],
@@ -33,6 +52,6 @@ export const fetchPublicRepos = async (page = 1): Promise<IFetchGitReposResponse
   console.log('response.headers', response.headers);
   return {
     session: session,
-    repositories: response.data,
+    repositories: response.data.items,
   };
 };

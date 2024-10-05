@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import moment from 'moment';
 
 import { IGitSession } from '@/common/interfaces';
 import { useAppSelector } from '@/redux/hooks';
@@ -7,11 +8,11 @@ import { Progress, Typography } from '@material-tailwind/react';
 
 import GitSessionInfoPopover from './GitSessionInfoPopover';
 
-interface ISessionInfo extends IGitSession {
+export interface ISessionInfo extends IGitSession {
   rateResetsOn: Date | null;
 }
 
-export function ProgressLabelOutside() {
+export function ProgressWithLabel() {
   return (
     <div className="w-full">
       <div className="mb-2 flex items-center justify-between gap-4">
@@ -31,20 +32,33 @@ const GitSessionInfo = () => {
   const { session } = useAppSelector((state: RootState) => state.gitRepo);
   const [sessionInfo, setSessionInfo] = useState<ISessionInfo | null>();
 
+  const parseToDate = useCallback((timestamp: number | null) => {
+    let date = null;
+
+    if (timestamp) {
+      const parsed = moment(timestamp);
+
+      if (parsed.isValid()) {
+        date = parsed.toDate();
+      }
+    }
+    return date;
+  }, []);
+
   useEffect(() => {
     if (session) {
       setSessionInfo({
         ...session,
-        rateResetsOn: session.rateResetTime ? new Date(session.rateResetTime * 1000) : null,
+        rateResetsOn: session.rateResetTime ? parseToDate(session.rateResetTime * 1000) : null,
       });
     } else {
       setSessionInfo(null);
     }
-  }, [session]);
+  }, [parseToDate, session]);
 
   return (
     sessionInfo && (
-      <div className="w-full">
+      <div className="w-full text-white">
         <div className="mb-2 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <GitSessionInfoPopover {...sessionInfo}>
             <div className="flex flex-row">

@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import gitHubLogo from '@/assets/github-mark.svg';
-import { IGitSession } from '@/common/interfaces';
 import {
   Popover,
   PopoverContent,
@@ -10,25 +9,18 @@ import {
   Typography,
 } from '@material-tailwind/react';
 
+import { ISessionInfo } from './GitSessionInfo';
+
 export default function GitSessionInfoPopover({
   children,
-  rateResetTime,
-}: PopoverProps & IGitSession) {
+  rateResetsOn,
+}: PopoverProps & ISessionInfo) {
   const [openPopover, setOpenPopover] = useState(false);
-  const [rateResetsOn, setRateResetsOn] = useState<Date | null>(null);
 
   const triggers = {
     onMouseEnter: () => setOpenPopover(true),
     onMouseLeave: () => setOpenPopover(false),
   };
-
-  useEffect(() => {
-    if (rateResetTime) {
-      setRateResetsOn(new Date(rateResetTime));
-    } else {
-      setRateResetsOn(null);
-    }
-  }, [rateResetTime]);
 
   return (
     children && (
@@ -37,8 +29,6 @@ export default function GitSessionInfoPopover({
         <PopoverContent {...triggers} className="z-50 w-full sm:max-w-[26rem]">
           <div className="mb-2 flex items-center gap-3">
             <Typography
-              as="a"
-              href="#"
               variant="h6"
               color="blue-gray"
               className="font-bold transition-colors hover:text-gray-900"
@@ -51,7 +41,7 @@ export default function GitSessionInfoPopover({
             GitHub limits the number of REST API requests that you can make within a specific amount
             of time. Read more about it{' '}
             <a
-              href="https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api?apiVersion=2022-11-28"
+              href="https://docs.github.com/en/rest/search/search?apiVersion=2022-11-28#rate-limit"
               target="_blank"
               rel="noreferrer"
             >
