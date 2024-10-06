@@ -1,0 +1,2 @@
+- detach search from result, show scroll bar on result div only
+- handle API limit reached view

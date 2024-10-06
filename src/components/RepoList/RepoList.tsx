@@ -45,12 +45,12 @@ const RepoList = () => {
   return (
     <div className="mx-auto w-full max-w-screen-2xl">
       <div className="flex justify-center pt-5">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-2xl">
           <div
             onScroll={handleScroll}
-            className="relative mb-4 rounded-lg bg-white px-3 py-2 shadow-md overflow-y-auto max-h-[50vh] lg:max-h-[58vh] xl:max-h-[66vh] scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300 "
+            className="relative mb-4 rounded-lg bg-white py-2 shadow-md overflow-y-auto max-h-[50vh] lg:max-h-[58vh] xl:max-h-[66vh] scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300 "
           >
-            <div className="flex items-center rounded-md bg-gray-200 sticky top-0">
+            <div className="flex items-center rounded-md bg-gray-200 sticky top-0 z-10 mx-3">
               <div className="pl-2">
                 <svg
                   className="size-6 fill-current text-gray-500"
@@ -101,7 +101,7 @@ const RepoList = () => {
             </div>
             {!loading && repositories.length > 0 && hasMore && (
               <div className="animate-bounce sticky bottom-0 flex justify-center">
-                <img src={arrowDownIcon} className="size-6" alt="React logo" />
+                <img src={arrowDownIcon} className="size-6" alt="Scroll down" />
               </div>
             )}
           </div>

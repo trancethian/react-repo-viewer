@@ -24,7 +24,7 @@ export default function GitSessionInfoPopover({
 
   return (
     children && (
-      <Popover open={openPopover} handler={setOpenPopover}>
+      <Popover open={openPopover} handler={setOpenPopover} placement="bottom-end">
         <PopoverHandler {...triggers}>{children}</PopoverHandler>
         <PopoverContent {...triggers} className="z-50 w-full sm:max-w-[26rem]">
           <div className="mb-2 flex items-center gap-3">

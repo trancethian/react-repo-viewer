@@ -1,9 +1,10 @@
-import { Spinner } from '@material-tailwind/react';
-
 export default function RepoListItemLoader() {
   return (
-    <div className="my-2 flex justify-center rounded-md p-2 text-gray-700">
-      <Spinner />
+    <div className="mt-2 flex space-x-2 justify-center p-2">
+      <span className="sr-only">Loading...</span>
+      <div className="h-2 w-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+      <div className="h-2 w-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+      <div className="h-2 w-2 bg-gray-500 rounded-full animate-bounce"></div>
     </div>
   );
 }
