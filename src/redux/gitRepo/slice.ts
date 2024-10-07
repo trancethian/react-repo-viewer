@@ -1,5 +1,5 @@
 import { IFetchPublicReposResponse } from '@/api/gitRepo';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IGitRepo } from '../../common/interfaces';
 
@@ -23,7 +23,6 @@ const initialState: IGitRepoState = {
   repositories: [],
   loading: false,
   error: null,
-  // { type: 'API_LIMIT_REACHED', message: 'API limit reached hold your horses' },
   page: 1,
   hasMore: false,
   searchName: '',
@@ -60,11 +59,14 @@ export const gitRepoSlice = createSlice({
       state.loading = false;
       state.hasMore = false;
       state.repositories = [];
-      state.error = { type: 'API_LIMIT_REACHED', message: action.payload.error };
+      state.error = { type: action.payload.type, message: action.payload.error };
     },
     setFetchRepositoriesLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase('RESET_GIT_REPO', () => initialState); // Reset to initial state
   },
 });
 
@@ -74,5 +76,7 @@ export const {
   fetchRepositoriesFailure,
   setFetchRepositoriesLoading,
 } = gitRepoSlice.actions;
+
+export const resetGitRepoState = createAction('RESET_GIT_REPO');
 
 export default gitRepoSlice.reducer;

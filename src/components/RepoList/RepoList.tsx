@@ -17,6 +17,7 @@ const RepoList = () => {
   const { repositories, loading, error, page, hasMore } = useAppSelector(
     (state: RootState) => state.gitRepo,
   );
+  const { rateRemaining } = useAppSelector((state: RootState) => state.gitSession);
 
   const onInputSearch = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -78,14 +79,14 @@ const RepoList = () => {
                 placement="top-start"
               >
                 <input
-                  className="w-full rounded-md bg-gray-200 p-2 leading-tight text-gray-700 focus:outline-none"
+                  className="w-full rounded-md bg-gray-200 p-2 leading-tight text-gray-700 focus:outline-none disabled:hover:cursor-not-allowed"
                   id="search"
                   type="text"
                   placeholder="Search Repo Name"
                   maxLength={256}
                   value={searchRepoName}
                   onChange={onInputSearch}
-                  disabled={!!error}
+                  disabled={!!error || rateRemaining == 0}
                 />
               </Tooltip>
             </div>

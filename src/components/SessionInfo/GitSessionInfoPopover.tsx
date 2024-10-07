@@ -1,7 +1,7 @@
-import { useCallback, useState } from 'react';
-import moment from 'moment';
+import { useState } from 'react';
 
 import gitHubLogo from '@/assets/github-mark.svg';
+import { parseToDate } from '@/common/helpers';
 import {
   Popover,
   PopoverContent,
@@ -20,24 +20,12 @@ export default function GitSessionInfoPopover({
     onMouseEnter: () => setOpenPopover(true),
     onMouseLeave: () => setOpenPopover(false),
   };
-  const parseToDate = useCallback((timestamp: number | null) => {
-    let date = null;
-
-    if (timestamp) {
-      const parsed = moment(timestamp);
-
-      if (parsed.isValid()) {
-        date = parsed.toLocaleString();
-      }
-    }
-    return date;
-  }, []);
 
   return (
     children && (
       <Popover open={openPopover} handler={setOpenPopover} placement="bottom-end">
         <PopoverHandler {...triggers}>{children}</PopoverHandler>
-        <PopoverContent {...triggers} className="z-50 w-full sm:max-w-[26rem]">
+        <PopoverContent {...triggers} className="z-50 w-full max-w-56 sm:max-w-[26rem]">
           <div className="mb-2 flex items-center gap-3">
             <Typography
               variant="h6"

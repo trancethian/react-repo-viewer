@@ -1,8 +1,10 @@
 export interface IGitSession {
-  rate: {
-    limit: number;
-    remaining: number;
-    reset: number;
+  resources: {
+    search: {
+      limit: number;
+      remaining: number;
+      reset: number;
+    };
   };
 }
 export interface IGitRepo {

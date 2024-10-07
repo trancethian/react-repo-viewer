@@ -1,10 +1,11 @@
 import { AxiosError } from 'axios';
 import { call, delay, put, takeLatest } from 'redux-saga/effects';
 
+import { API_LIMIT_REACHED } from '@/constants/api';
 import { PayloadAction } from '@reduxjs/toolkit';
 
 import { fetchPublicRepos, IFetchPublicReposResponse } from '../../api/gitRepo';
-import { setGitSession } from '../gitSession/slice';
+import { fetchGitSessionSuccess } from '../gitSession/slice';
 
 import {
   fetchRepositoriesFailure,
@@ -26,20 +27,18 @@ function* fetchReposSaga(action: PayloadAction<IGitRepoFetchPayload>) {
     yield put(fetchRepositoriesSuccess(response));
 
     if (response.session) {
-      yield put(setGitSession(response.session));
+      yield put(fetchGitSessionSuccess(response.session));
     }
   } catch (error) {
     console.log('error', error);
-    let errorMsg = 'Failed to fetch repositories';
     let errorType: TGitRepoError = '';
 
     if (error instanceof AxiosError) {
-      if (error.code == '403') {
-        errorType = 'API_LIMIT_REACHED';
+      if (error.status == 403) {
+        errorType = API_LIMIT_REACHED;
       }
-      errorMsg = error.message;
     }
-    yield put(fetchRepositoriesFailure({ type: errorType, error: errorMsg }));
+    yield put(fetchRepositoriesFailure({ type: errorType, error: 'Failed to fetch repositories' }));
   }
 }
 

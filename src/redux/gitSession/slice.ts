@@ -5,7 +5,6 @@ interface IGitSessionState {
   rateLimit: number;
   rateRemaining: number;
   rateResetTimestamp: number;
-  rateLimitReached: boolean;
   error: { message: string | null } | null;
 }
 
@@ -15,16 +14,22 @@ export const gitSessionSlice = createSlice({
   name: 'gitSession',
   initialState,
   reducers: {
-    setGitSession(state, action: PayloadAction<IGitSession>) {
+    fetchGitSessionRequest(state) {
       state.error = null;
-      state.rateLimit = action.payload.rate.limit;
-      state.rateRemaining = action.payload.rate.remaining;
-      state.rateResetTimestamp = action.payload.rate.reset * 1000;
-      state.rateLimitReached = action.payload.rate.remaining <= 0;
+    },
+    fetchGitSessionSuccess(state, action: PayloadAction<IGitSession>) {
+      state.error = null;
+      state.rateLimit = action.payload.resources.search.limit;
+      state.rateRemaining = action.payload.resources.search.remaining;
+      state.rateResetTimestamp = action.payload.resources.search.reset * 1000;
+    },
+    fetchGitSessionFailure(state, action: PayloadAction<{ error: string }>) {
+      state.error = { message: action.payload.error };
     },
   },
 });
 
-export const { setGitSession } = gitSessionSlice.actions;
+export const { fetchGitSessionRequest, fetchGitSessionSuccess, fetchGitSessionFailure } =
+  gitSessionSlice.actions;
 
 export default gitSessionSlice.reducer;
