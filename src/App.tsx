@@ -63,7 +63,7 @@ function App() {
           <Typography className="font-medium">
             {"Uh oh! You've hit the Rate Limit. Please try again later."}
           </Typography>
-          <ul className="mt-2 ml-2 list-inside list-disc">
+          <ul className="my-2 ml-2 list-inside list-disc">
             {rateResetTimestamp && (
               <li>Your limit will reset on {parseToDate(rateResetTimestamp)}</li>
             )}
