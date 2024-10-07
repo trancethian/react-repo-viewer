@@ -2,6 +2,7 @@ import plugin from 'tailwindcss/plugin';
 import withMT from '@material-tailwind/react/utils/withMT';
 
 export default withMT({
+  base: '/react-repo-viewer',
   content: ['./index.html', './src/*.tsx', './src/components/**/*.{jsx,tsx}'],
   theme: {
     extend: {
