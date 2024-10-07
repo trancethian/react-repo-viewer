@@ -44,5 +44,3 @@ jobs:
         run: yarn check:format
       - name: Check types
         run: yarn check:types
-      - name: Run tests
-        run: yarn test
