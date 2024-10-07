@@ -65,7 +65,7 @@ function App() {
           </Typography>
           <ul className="my-2 ml-2 list-inside list-disc">
             {rateResetTimestamp && (
-              <li>Your limit will reset on {parseToDate(rateResetTimestamp)}</li>
+              <li>You can refresh your limit on {parseToDate(rateResetTimestamp)}</li>
             )}
           </ul>
           <Button onClick={() => dispatch(fetchGitSessionRequest())}>Refresh Limit</Button>
