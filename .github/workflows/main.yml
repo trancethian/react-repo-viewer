@@ -1,52 +1,50 @@
 name: Deploy
 
 on:
+  pull_request:
+    branches: [main]
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
-  build:
-    name: Build
+  checks:
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-
-      - name: Setup Node
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
         with:
-          node-version: 18
-
-      - name: Install dependencies
-        uses: bahmutov/npm-install@v1
-
-      - name: Build project
-        run: npm run build
-
-      - name: Upload production-ready build files
-        uses: actions/upload-artifact@v4
-        with:
-          path: ./dist
-
-  deploy:
-    # Add a dependency to the build job
-    needs: build
-  
-    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+          node-version: '20.x'
+      - name: Test Build
+        run: |
+          if [ -e yarn.lock ]; then
+          yarn install --frozen-lockfile
+          elif [ -e package-lock.json ]; then
+          npm ci
+          else
+          npm i
+          fi
+          npm run build
+  gh-release:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
     permissions:
-      pages: write      # to deploy to Pages
       contents: write
-
-    # Deploy to the github-pages environment
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    # Specify runner + deployment step
-    runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '20.x'
+      - name: Build
+        run: |
+          if [ -e yarn.lock ]; then
+          yarn install --frozen-lockfile
+          elif [ -e package-lock.json ]; then
+          npm ci
+          else
+          npm i
+          fi
+          npm run build
       - name: Release to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
