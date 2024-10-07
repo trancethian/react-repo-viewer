@@ -1,10 +1,10 @@
-<h1 align="center">
-  Vite Template React, Typescript, Redux, Saga, ESLint and Prettier
-</h1>
+# Vite Template React, Typescript, Redux, Saga, ESLint and Prettier
 
-## Technologies / Tools Used
+Simple ReactJS app that displays Open Source Repositories of [React Community](https://github.com/reactjs).
 
-- [React Js](https://www.npmjs.com/package/react)
+## Tools Used
+
+- [ReactJs](https://www.npmjs.com/package/react)
 - [React Redux](https://www.npmjs.com/package/react-redux)
 - [ReduxJs Toolkit](https://www.npmjs.com/package/@reduxjs/toolkit)
 - [Redux Saga](https://www.npmjs.com/package/redux-saga)
