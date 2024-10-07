@@ -4,6 +4,7 @@ import { call, delay, put, takeLatest } from 'redux-saga/effects';
 import { PayloadAction } from '@reduxjs/toolkit';
 
 import { fetchPublicRepos, IFetchPublicReposResponse } from '../../api/gitRepo';
+import { setGitSession } from '../gitSession/slice';
 
 import {
   fetchRepositoriesFailure,
@@ -23,6 +24,10 @@ function* fetchReposSaga(action: PayloadAction<IGitRepoFetchPayload>) {
       ...action.payload,
     });
     yield put(fetchRepositoriesSuccess(response));
+
+    if (response.session) {
+      yield put(setGitSession(response.session));
+    }
   } catch (error) {
     console.log('error', error);
     let errorMsg = 'Failed to fetch repositories';

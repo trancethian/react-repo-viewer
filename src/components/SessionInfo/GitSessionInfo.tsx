@@ -1,6 +1,3 @@
-import { useCallback, useEffect, useState } from 'react';
-import moment from 'moment';
-
 import { IGitSession } from '@/common/interfaces';
 import { useAppSelector } from '@/redux/hooks';
 import { RootState } from '@/redux/store';
@@ -9,40 +6,15 @@ import { Progress, Typography } from '@material-tailwind/react';
 import GitSessionInfoPopover from './GitSessionInfoPopover';
 
 export interface ISessionInfo extends IGitSession {
-  rateResetsOn: Date | null;
+  rateResetsOn: Date | undefined;
 }
 
 const GitSessionInfo = () => {
-  const { session } = useAppSelector((state: RootState) => state.gitRepo);
-  const [sessionInfo, setSessionInfo] = useState<ISessionInfo | null>();
-
-  const parseToDate = useCallback((timestamp: number | null) => {
-    let date = null;
-
-    if (timestamp) {
-      const parsed = moment(timestamp);
-
-      if (parsed.isValid()) {
-        date = parsed.toDate();
-      }
-    }
-    return date;
-  }, []);
-
-  useEffect(() => {
-    if (session) {
-      setSessionInfo({
-        ...session,
-        rateResetsOn: session.rateResetTime ? parseToDate(session.rateResetTime * 1000) : null,
-      });
-    } else {
-      setSessionInfo(null);
-    }
-  }, [parseToDate, session]);
+  const sessionInfo = useAppSelector((state: RootState) => state.gitSession);
 
   return (
     sessionInfo && (
-      <GitSessionInfoPopover {...sessionInfo}>
+      <GitSessionInfoPopover rateResetsOn={sessionInfo.rateResetTimestamp}>
         <div className="w-full text-white">
           <div className="mb-2 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <div className="flex flex-row">

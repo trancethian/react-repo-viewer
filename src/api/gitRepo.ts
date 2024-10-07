@@ -44,10 +44,11 @@ export const fetchPublicRepos = async (
   });
 
   const session: IGitSession = {
-    rateLimit: response.headers['x-ratelimit-limit'],
-    rateRemaining: response.headers['x-ratelimit-remaining'],
-    rateResetTime: response.headers['x-ratelimit-reset'],
-    rateLimitReached: response.headers['x-ratelimit-remaining'] <= 0,
+    rate: {
+      limit: response.headers['x-ratelimit-limit'],
+      remaining: response.headers['x-ratelimit-remaining'],
+      reset: response.headers['x-ratelimit-reset'],
+    },
   };
 
   return {

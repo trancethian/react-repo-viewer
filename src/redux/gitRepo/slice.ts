@@ -1,11 +1,9 @@
 import { IFetchPublicReposResponse } from '@/api/gitRepo';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { IGitRepo, IGitSession } from '../../common/interfaces';
-import { RootState } from '../store';
+import { IGitRepo } from '../../common/interfaces';
 
 interface IGitRepoState {
-  session: IGitSession | null;
   repositories: IGitRepo[];
   loading: boolean;
   error: { type: TGitRepoError; message: string | null } | null;
@@ -22,7 +20,6 @@ export interface IGitRepoFetchPayload {
 export type TGitRepoError = '' | 'API_LIMIT_REACHED';
 
 const initialState: IGitRepoState = {
-  session: null,
   repositories: [],
   loading: false,
   error: null,
@@ -31,8 +28,6 @@ const initialState: IGitRepoState = {
   hasMore: false,
   searchName: '',
 };
-
-export const getGitRepoState = (state: RootState): IGitRepoState => state.gitRepo;
 
 export const gitRepoSlice = createSlice({
   name: 'gitRepo',
@@ -56,7 +51,6 @@ export const gitRepoSlice = createSlice({
           ? payloadRepositories
           : state.repositories.concat(action.payload.repositories);
       state.loading = false;
-      state.session = action.payload.session;
       state.repositories = newRepositories;
       state.hasMore =
         newRepositories.length > 0 && newRepositories.length < action.payload.totalCount;

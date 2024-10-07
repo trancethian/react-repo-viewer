@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import moment from 'moment';
 
 import gitHubLogo from '@/assets/github-mark.svg';
 import {
@@ -9,18 +10,28 @@ import {
   Typography,
 } from '@material-tailwind/react';
 
-import { ISessionInfo } from './GitSessionInfo';
-
 export default function GitSessionInfoPopover({
   children,
   rateResetsOn,
-}: PopoverProps & ISessionInfo) {
+}: PopoverProps & { rateResetsOn: number | undefined }) {
   const [openPopover, setOpenPopover] = useState(false);
 
   const triggers = {
     onMouseEnter: () => setOpenPopover(true),
     onMouseLeave: () => setOpenPopover(false),
   };
+  const parseToDate = useCallback((timestamp: number | null) => {
+    let date = null;
+
+    if (timestamp) {
+      const parsed = moment(timestamp);
+
+      if (parsed.isValid()) {
+        date = parsed.toLocaleString();
+      }
+    }
+    return date;
+  }, []);
 
   return (
     children && (
@@ -58,7 +69,7 @@ export default function GitSessionInfoPopover({
                   color="gray"
                   className="text-blue-gray-500 text-xs font-medium"
                 >
-                  Your limit will reset on {rateResetsOn.toLocaleString()}.
+                  Your limit will reset on {parseToDate(rateResetsOn)}.
                 </Typography>
               </div>
             )}
