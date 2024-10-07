@@ -5,7 +5,7 @@ import { Tooltip, Typography } from '@material-tailwind/react';
 
 import { IGitRepo } from '../../common/interfaces';
 
-interface RepoListItemProps {
+interface ListItemProps {
   repo: IGitRepo;
 }
 
@@ -52,7 +52,7 @@ const RepoActionItem = ({ repo, type, icon }: IRepoActionItemProps) => {
   );
 };
 
-export default function RepoListItem({ repo }: RepoListItemProps) {
+export default function ListItem({ repo }: ListItemProps) {
   return (
     <div className="bg-none [&:not(:last-child)]:border-b-2 flex flex-1 items-center justify-between gap-1 p-2 text-gray-700">
       <div className="flex flex-col items-start text-left">

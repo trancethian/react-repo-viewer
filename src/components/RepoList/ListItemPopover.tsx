@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@material-tailwind/react';
 
-export default function RepoListItemPopover({ children }: PopoverProps) {
+export default function ListItemPopover({ children }: PopoverProps) {
   const [openPopover, setOpenPopover] = useState(false);
 
   const triggers = {

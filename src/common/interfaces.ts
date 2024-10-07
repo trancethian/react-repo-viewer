@@ -2,6 +2,7 @@ export interface IGitSession {
   rateLimit: number | null;
   rateRemaining: number | null;
   rateResetTime: number | null;
+  rateLimitReached: boolean;
 }
 export interface IGitRepo {
   id: number;

@@ -7,8 +7,9 @@ import { fetchRepositoriesRequest } from '../../redux/gitRepo/slice';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { RootState } from '../../redux/store';
 
-import RepoListItem from './RepoListItem';
-import RepoListItemLoader from './RepoListItemLoader';
+import ErrorMessage from './ErrorMessage';
+import RepoListItem from './ListItem';
+import RepoListItemLoader from './Loader';
 
 const RepoList = () => {
   const dispatch = useAppDispatch();
@@ -84,19 +85,15 @@ const RepoList = () => {
                   maxLength={256}
                   value={searchRepoName}
                   onChange={onInputSearch}
+                  disabled={!!error}
                 />
               </Tooltip>
             </div>
             <div className="text-sm">
-              {error ? (
-                <div className="my-2 flex justify-start rounded-md p-2 text-red-700">
-                  <span className="grow px-2 font-medium">
-                    Oops! Something went wrong, please try again later!
-                  </span>
-                </div>
-              ) : (
-                repositories.map((repo) => <RepoListItem key={repo.id} repo={repo} />)
-              )}
+              <ErrorMessage />
+              {repositories.map((repo) => (
+                <RepoListItem key={repo.id} repo={repo} />
+              ))}
               {loading && <RepoListItemLoader />}
             </div>
             {!loading && repositories.length > 0 && hasMore && (

@@ -1,4 +1,4 @@
-export default function RepoListItemLoader() {
+export default function Loader() {
   return (
     <div className="mt-2 flex space-x-2 justify-center p-2">
       <span className="sr-only">Loading...</span>

@@ -47,6 +47,7 @@ export const fetchPublicRepos = async (
     rateLimit: response.headers['x-ratelimit-limit'],
     rateRemaining: response.headers['x-ratelimit-remaining'],
     rateResetTime: response.headers['x-ratelimit-reset'],
+    rateLimitReached: response.headers['x-ratelimit-remaining'] <= 0,
   };
 
   return {
