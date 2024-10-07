@@ -46,7 +46,7 @@ function App() {
       </div>
       <Typography
         className="text-white mb-4 [text-shadow:_0_4px_8px_rgb(0_0_0_/_0.8)]"
-        variant="h1"
+        variant="h2"
       >
         <a
           className="hover:underline"
@@ -58,7 +58,7 @@ function App() {
         </a>{' '}
         Open Source Repositories
       </Typography>
-      <div className="mx-auto flex w-full max-w-screen-sm text-left">
+      <div className="mx-auto flex w-full max-w-screen-sm text-left mb-4">
         <CustomAlert open={rateLimitReached}>
           <Typography className="font-medium">
             {"Uh oh! You've hit the Rate Limit. Please try again later."}

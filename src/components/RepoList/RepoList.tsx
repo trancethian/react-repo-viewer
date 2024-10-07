@@ -46,13 +46,10 @@ const RepoList = () => {
 
   return (
     <div className="mx-auto w-full max-w-screen-2xl">
-      <div className="flex justify-center pt-5">
+      <div className="flex justify-center">
         <div className="w-full max-w-2xl">
-          <div
-            onScroll={handleScroll}
-            className="relative mb-4 rounded-lg bg-white py-2 shadow-md overflow-y-auto max-h-[50vh] lg:max-h-[58vh] xl:max-h-[66vh] scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300 "
-          >
-            <div className="flex items-center rounded-md bg-gray-200 sticky top-0 z-10 mx-3">
+          <div className="relative mb-4 rounded-lg bg-white py-1 shadow-md">
+            <div className="flex items-center rounded-md bg-gray-200 sticky top-0 z-10 m-3 mt-2">
               <div className="pl-2">
                 <svg
                   className="size-6 fill-current text-gray-500"
@@ -90,15 +87,18 @@ const RepoList = () => {
                 />
               </Tooltip>
             </div>
-            <div className="text-sm">
+            <div
+              onScroll={handleScroll}
+              className="text-sm overflow-y-auto max-h-[50vh] lg:max-h-[58vh] xl:max-h-[66vh] scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300"
+            >
               <ErrorMessage />
               {repositories.map((repo) => (
                 <RepoListItem key={repo.id} repo={repo} />
               ))}
-              {loading && <RepoListItemLoader />}
+              {repositories.length > 0 && hasMore && <RepoListItemLoader show={loading} />}
             </div>
             {!loading && repositories.length > 0 && hasMore && (
-              <div className="animate-bounce sticky bottom-0 flex justify-center">
+              <div className="animate-bounce absolute mx-auto left-0 right-0 bottom-0 flex justify-center">
                 <img src={arrowDownIcon} className="size-6" alt="Scroll down" />
               </div>
             )}
