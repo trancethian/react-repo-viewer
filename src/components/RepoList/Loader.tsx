@@ -1,6 +1,6 @@
 export default function Loader({ show }: { show: boolean }) {
   return (
-    <div className="mt-2 flex space-x-2 justify-center p-2">
+    <div className="my-2 flex space-x-2 justify-center p-2">
       {show && (
         <>
           <span className="sr-only">Loading...</span>

@@ -10,11 +10,12 @@ import { RootState } from '../../redux/store';
 import ErrorMessage from './ErrorMessage';
 import RepoListItem from './ListItem';
 import RepoListItemLoader from './Loader';
+import NoResultMessage from './NoResultMessage';
 
 const RepoList = () => {
   const dispatch = useAppDispatch();
   const [searchRepoName, setSearchRepoName] = useState<string>('');
-  const { repositories, loading, error, page, hasMore } = useAppSelector(
+  const { repositories, loading, error, page, hasMore, noResult } = useAppSelector(
     (state: RootState) => state.gitRepo,
   );
   const { rateRemaining, rateLimitReached } = useAppSelector(
@@ -49,7 +50,7 @@ const RepoList = () => {
 
   return (
     <div className="mx-auto w-full flex flex-col justify-center max-w-2xl relative mb-4 rounded-lg bg-white py-1 shadow-md overflow-hidden">
-      <div className="flex items-center rounded-md bg-gray-200 sticky top-0 z-10 m-3 mt-2">
+      <div className="flex items-center rounded-md bg-gray-200 sticky top-0 z-10 m-2">
         <div className="pl-2">
           <svg
             className="size-6 fill-current text-gray-500"
@@ -89,8 +90,10 @@ const RepoList = () => {
         onScroll={handleScroll}
         className="text-sm overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300"
       >
-        {error ? (
-          <ErrorMessage />
+        {loading && <RepoListItemLoader show={loading} />}
+        {error && <ErrorMessage />}
+        {!loading && noResult ? (
+          <NoResultMessage />
         ) : (
           repositories.map((repo) => <RepoListItem key={repo.id} repo={repo} />)
         )}

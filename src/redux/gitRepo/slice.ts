@@ -9,6 +9,7 @@ interface IGitRepoState {
   error: { type: TGitRepoError; message: string | null } | null;
   page: number;
   hasMore: boolean;
+  noResult: boolean;
   searchName: string;
 }
 
@@ -25,6 +26,7 @@ const initialState: IGitRepoState = {
   error: null,
   page: 1,
   hasMore: false,
+  noResult: false,
   searchName: '',
 };
 
@@ -53,6 +55,7 @@ export const gitRepoSlice = createSlice({
       state.repositories = newRepositories;
       state.hasMore =
         newRepositories.length > 0 && newRepositories.length < action.payload.totalCount;
+      state.noResult = newRepositories.length == 0;
       state.error = null;
     },
     fetchRepositoriesFailure(state, action: PayloadAction<{ type: TGitRepoError; error: string }>) {

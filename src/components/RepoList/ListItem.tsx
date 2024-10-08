@@ -54,7 +54,7 @@ const RepoActionItem = ({ repo, type, icon }: IRepoActionItemProps) => {
 
 export default function ListItem({ repo }: ListItemProps) {
   return (
-    <div className="bg-none [&:not(:last-child)]:border-b-2 flex flex-1 items-center justify-between gap-1 px-2 pb-2 text-gray-700">
+    <div className="bg-none [&:not(:last-child)]:border-b-2 flex flex-1 items-center justify-between gap-1 p-2 text-gray-700">
       <div className="flex flex-col items-start text-left">
         <Typography variant="h6" className="font-bold">
           <a
