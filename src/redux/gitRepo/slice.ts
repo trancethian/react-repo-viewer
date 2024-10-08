@@ -67,6 +67,9 @@ export const gitRepoSlice = createSlice({
     setFetchRepositoriesLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
+    resetGitRepo() {
+      return initialState;
+    },
   },
 });
 
@@ -75,6 +78,7 @@ export const {
   fetchRepositoriesSuccess,
   fetchRepositoriesFailure,
   setFetchRepositoriesLoading,
+  resetGitRepo,
 } = gitRepoSlice.actions;
 
 export default gitRepoSlice.reducer;

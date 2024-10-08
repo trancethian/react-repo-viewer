@@ -3,6 +3,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { fetchGitSession, IFetchGitSessionResponse } from '@/api/gitSession';
 
 import { beginCountdownToTime } from '../countdown/slice';
+import { resetGitRepo } from '../gitRepo/slice';
 import {
   fetchGitSessionFailure,
   fetchGitSessionRequest,
@@ -29,6 +30,7 @@ function* fetchGitSessionSaga() {
     if (rateLimitReached) {
       yield put(beginCountdownToTime(reset));
     }
+    yield put(resetGitRepo());
     yield put(fetchGitSessionSuccess(newState));
   } catch (error) {
     console.error('error', error);

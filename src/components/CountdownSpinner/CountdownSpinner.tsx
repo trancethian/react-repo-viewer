@@ -17,7 +17,7 @@ export default function CountdownSpinner({ value }: CountdownSpinnerProps) {
           strokeLinecap: 'butt',
         })}
       >
-        <div style={{ fontSize: 12, marginLeft: 2 }}>
+        <div style={{ fontSize: 12 }}>
           <strong>{value}</strong>
         </div>
       </CircularProgressbarWithChildren>

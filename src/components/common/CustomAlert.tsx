@@ -29,9 +29,9 @@ export default function CustomAlert(props: Partial<CustomAlertProps>) {
     open && (
       <div
         role="alert"
-        className="mt-3 relative flex flex-col w-full p-3 text-sm text-white bg-gradient-to-tr from-gray-900 to-gray-800 rounded-md"
+        className="mt-3 relative flex flex-col items-center w-full p-3 text-sm text-white bg-gradient-to-tr from-gray-900 to-gray-800 rounded-md"
       >
-        <span className="flex text-base gap-1">
+        <span className="flex text-base items-center gap-1">
           <AlertIcon />
           {title}
         </span>

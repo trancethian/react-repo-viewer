@@ -28,11 +28,11 @@ export default function RateLimitAlert() {
       open={rateLimitReached}
       title={<Typography className="font-medium">{"Uh oh! You've hit the Rate Limit."}</Typography>}
     >
-      <ul className="my-2 ml-2 list-inside list-disc">
-        {rateResetDateTime && (
-          <li>You can refresh your limit on {rateResetDateTime.toLocaleString()}</li>
-        )}
-      </ul>
+      {rateResetDateTime && (
+        <span className="my-2">
+          You can refresh your limit on {rateResetDateTime.toLocaleString()}
+        </span>
+      )}
       <div className="flex">
         <Button disabled={isRefreshDisabled} onClick={() => dispatch(fetchGitSessionRequest())}>
           Refresh Limit
