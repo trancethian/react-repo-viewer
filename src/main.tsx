@@ -7,6 +7,7 @@ import { ThemeProvider } from '@material-tailwind/react';
 import { store } from './redux/store';
 import App from './App';
 
+import 'react-circular-progressbar/dist/styles.css';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
