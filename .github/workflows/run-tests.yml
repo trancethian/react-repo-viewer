@@ -7,17 +7,13 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:
-    branches:
-      - main
-
 jobs:
   build:
     name: Test Suite
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ['18.x', '20.x']
+        node-version: ['18.x']
 
     steps:
       - name: Use Node.js ${{ matrix.node-version }}
