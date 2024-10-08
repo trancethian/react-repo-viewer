@@ -1,12 +1,12 @@
-import { Alert, AlertProps } from '@material-tailwind/react';
+import { ReactNode } from 'react';
 
-function Icon() {
+function AlertIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
-      className="h-6 w-6"
+      className="size-9 sm:size-6"
     >
       <path
         fillRule="evenodd"
@@ -17,12 +17,26 @@ function Icon() {
   );
 }
 
-export default function CustomAlert(props: AlertProps) {
-  const { open, children } = props;
+export interface CustomAlertProps {
+  open: boolean;
+  title: ReactNode;
+  children: ReactNode;
+}
+export default function CustomAlert(props: Partial<CustomAlertProps>) {
+  const { open, title, children } = props;
 
   return (
-    <Alert variant="gradient" className="flex" open={open} icon={<Icon />}>
-      {children}
-    </Alert>
+    open && (
+      <div
+        role="alert"
+        className="mt-3 relative flex flex-col w-full p-3 text-sm text-white bg-gradient-to-tr from-gray-900 to-gray-800 rounded-md"
+      >
+        <span className="flex text-base gap-1">
+          <AlertIcon />
+          {title}
+        </span>
+        {children}
+      </div>
+    )
   );
 }
