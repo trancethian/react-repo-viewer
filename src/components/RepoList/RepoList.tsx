@@ -45,66 +45,59 @@ const RepoList = () => {
   );
 
   return (
-    <div className="mx-auto w-full max-w-screen-2xl">
-      <div className="flex justify-center">
-        <div className="w-full max-w-2xl">
-          <div className="relative mb-4 rounded-lg bg-white py-1 shadow-md">
-            <div className="flex items-center rounded-md bg-gray-200 sticky top-0 z-10 m-3 mt-2">
-              <div className="pl-2">
-                <svg
-                  className="size-6 fill-current text-gray-500"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    className="heroicon-ui"
-                    d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"
-                  />
-                </svg>
-              </div>
-              <Tooltip
-                open={searchRepoName.length > 0 && searchRepoName.length < 3}
-                content={
-                  <Typography className="text-xs">
-                    Type at least 3 letters to begin searching
-                  </Typography>
-                }
-                animate={{
-                  mount: { scale: 1, y: 0 },
-                  unmount: { scale: 0, y: 25 },
-                }}
-                placement="top-start"
-              >
-                <input
-                  className="w-full rounded-md bg-gray-200 p-2 leading-tight text-gray-700 focus:outline-none disabled:hover:cursor-not-allowed"
-                  id="search"
-                  type="text"
-                  placeholder="Search Repo Name"
-                  maxLength={256}
-                  value={searchRepoName}
-                  onChange={onInputSearch}
-                  disabled={!!error || rateRemaining == 0}
-                />
-              </Tooltip>
-            </div>
-            <div
-              onScroll={handleScroll}
-              className="text-sm overflow-y-auto max-h-[50vh] lg:max-h-[58vh] xl:max-h-[66vh] scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300"
-            >
-              <ErrorMessage />
-              {repositories.map((repo) => (
-                <RepoListItem key={repo.id} repo={repo} />
-              ))}
-              {repositories.length > 0 && hasMore && <RepoListItemLoader show={loading} />}
-            </div>
-            {!loading && repositories.length > 0 && hasMore && (
-              <div className="animate-bounce absolute mx-auto left-0 right-0 bottom-0 flex justify-center">
-                <img src={arrowDownIcon} className="size-6" alt="Scroll down" />
-              </div>
-            )}
-          </div>
+    <div className="mx-auto w-full flex flex-col justify-center max-w-2xl relative mb-4 rounded-lg bg-white py-1 shadow-md max-h-[60vh] sm:max-h-[70vh]">
+      <div className="flex items-center rounded-md bg-gray-200 sticky top-0 z-10 m-3 mt-2">
+        <div className="pl-2">
+          <svg
+            className="size-6 fill-current text-gray-500"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path
+              className="heroicon-ui"
+              d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"
+            />
+          </svg>
         </div>
+        <Tooltip
+          open={searchRepoName.length > 0 && searchRepoName.length < 3}
+          content={
+            <Typography className="text-xs">Type at least 3 letters to begin searching</Typography>
+          }
+          animate={{
+            mount: { scale: 1, y: 0 },
+            unmount: { scale: 0, y: 25 },
+          }}
+          placement="top-start"
+        >
+          <input
+            className="w-full rounded-md bg-gray-200 p-2 leading-tight text-gray-700 focus:outline-none disabled:hover:cursor-not-allowed"
+            id="search"
+            type="text"
+            placeholder="Search Repo Name"
+            maxLength={256}
+            value={searchRepoName}
+            onChange={onInputSearch}
+            disabled={!!error || rateRemaining == 0}
+          />
+        </Tooltip>
       </div>
+      <div
+        onScroll={handleScroll}
+        className="text-sm overflow-y-auto scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-slate-700 scrollbar-track-slate-300"
+      >
+        {error ? (
+          <ErrorMessage />
+        ) : (
+          repositories.map((repo) => <RepoListItem key={repo.id} repo={repo} />)
+        )}
+        {repositories.length > 0 && hasMore && <RepoListItemLoader show={loading} />}
+      </div>
+      {!loading && repositories.length > 0 && hasMore && (
+        <div className="animate-bounce absolute mx-auto left-0 right-0 bottom-0 flex justify-center">
+          <img src={arrowDownIcon} className="size-6" alt="Scroll down" />
+        </div>
+      )}
     </div>
   );
 };
