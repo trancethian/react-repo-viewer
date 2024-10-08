@@ -5,7 +5,8 @@ import { API_LIMIT_REACHED } from '@/constants/api';
 import { PayloadAction } from '@reduxjs/toolkit';
 
 import { fetchPublicRepos, IFetchPublicReposResponse } from '../../api/gitRepo';
-import { fetchGitSessionSuccess } from '../gitSession/slice';
+import { beginCountdownToTime } from '../countdown/slice';
+import { fetchGitSessionSuccess, IGitSessionState } from '../gitSession/slice';
 
 import {
   fetchRepositoriesFailure,
@@ -18,19 +19,36 @@ import {
 
 function* fetchReposSaga(action: PayloadAction<IGitRepoFetchPayload>) {
   try {
+    let rateLimitReached = false;
     yield put(setFetchRepositoriesLoading(true));
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const response: IFetchPublicReposResponse = yield call(fetchPublicRepos, {
       ...action.payload,
     });
-    yield put(fetchRepositoriesSuccess(response));
+    const { session } = response;
 
-    if (response.session) {
-      yield put(fetchGitSessionSuccess(response.session));
+    if (session) {
+      const { remaining, limit, reset } = session.resources.search;
+      const newState: IGitSessionState = {
+        rateRemaining: remaining,
+        rateLimit: limit,
+        rateResetTimestamp: reset,
+        rateLimitReached: false,
+        error: null,
+      };
+      rateLimitReached = remaining <= 0;
+      newState.rateLimitReached = rateLimitReached;
+
+      if (rateLimitReached) {
+        yield put(beginCountdownToTime(reset));
+      }
+      yield put(fetchGitSessionSuccess(newState));
     }
+
+    yield put(fetchRepositoriesSuccess(response));
   } catch (error) {
-    console.log('error', error);
+    console.error('error', error);
     let errorType: TGitRepoError = '';
 
     if (error instanceof AxiosError) {

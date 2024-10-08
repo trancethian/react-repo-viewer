@@ -1,10 +1,10 @@
-import { IGitSession } from '@/common/interfaces';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface IGitSessionState {
+export interface IGitSessionState {
   rateLimit: number;
   rateRemaining: number;
   rateResetTimestamp: number;
+  rateLimitReached: boolean;
   error: { message: string | null } | null;
 }
 
@@ -17,11 +17,13 @@ export const gitSessionSlice = createSlice({
     fetchGitSessionRequest(state) {
       state.error = null;
     },
-    fetchGitSessionSuccess(state, action: PayloadAction<IGitSession>) {
+    fetchGitSessionSuccess(state, action: PayloadAction<IGitSessionState>) {
+      const newState = action.payload;
       state.error = null;
-      state.rateLimit = action.payload.resources.search.limit;
-      state.rateRemaining = action.payload.resources.search.remaining;
-      state.rateResetTimestamp = action.payload.resources.search.reset * 1000;
+      state.rateLimit = newState.rateLimit;
+      state.rateRemaining = newState.rateRemaining;
+      state.rateResetTimestamp = newState.rateResetTimestamp * 1000;
+      state.rateLimitReached = newState.rateLimitReached;
     },
     fetchGitSessionFailure(state, action: PayloadAction<{ error: string }>) {
       state.error = { message: action.payload.error };

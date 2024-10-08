@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import gitHubLogo from '@/assets/github-mark.svg';
 import { parseToDate } from '@/common/helpers';
@@ -12,14 +12,21 @@ import {
 
 export default function GitSessionInfoPopover({
   children,
-  rateResetsOn,
-}: PopoverProps & { rateResetsOn: number | undefined }) {
+  rateResetTimestamp,
+}: PopoverProps & { rateResetTimestamp: number | undefined }) {
   const [openPopover, setOpenPopover] = useState(false);
+  const [rateResetDateTime, setRateResetDateTime] = useState<Date>();
 
   const triggers = {
     onMouseEnter: () => setOpenPopover(true),
     onMouseLeave: () => setOpenPopover(false),
   };
+
+  useEffect(() => {
+    if (rateResetTimestamp) {
+      setRateResetDateTime(parseToDate(rateResetTimestamp));
+    }
+  }, [rateResetTimestamp]);
 
   return (
     children && (
@@ -49,7 +56,7 @@ export default function GitSessionInfoPopover({
             .
           </Typography>
           <div className="mt-4 flex flex-col items-start gap-5">
-            {rateResetsOn && (
+            {rateResetDateTime && (
               <div className="flex items-center gap-1">
                 <span className="size-3 rounded-full bg-blue-700" />
                 <Typography
@@ -57,7 +64,7 @@ export default function GitSessionInfoPopover({
                   color="gray"
                   className="text-blue-gray-500 text-xs font-medium"
                 >
-                  Your limit will reset on {parseToDate(rateResetsOn)}.
+                  Your limit will reset on {rateResetDateTime.toLocaleString()}.
                 </Typography>
               </div>
             )}

@@ -1,11 +1,10 @@
-import { IGitSession } from '@/common/interfaces';
 import { useAppSelector } from '@/redux/hooks';
 import { RootState } from '@/redux/store';
 import { Progress, Typography } from '@material-tailwind/react';
 
 import GitSessionInfoPopover from './GitSessionInfoPopover';
 
-export interface ISessionInfo extends IGitSession {
+export interface ISessionInfo {
   rateResetsOn: Date | undefined;
 }
 
@@ -14,7 +13,7 @@ const GitSessionInfo = () => {
 
   return (
     sessionInfo && (
-      <GitSessionInfoPopover rateResetsOn={sessionInfo.rateResetTimestamp}>
+      <GitSessionInfoPopover rateResetTimestamp={sessionInfo.rateResetTimestamp}>
         <div className="w-full text-white">
           <div className="mb-2 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <div className="flex flex-row">

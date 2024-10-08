@@ -1,5 +1,5 @@
 import { IFetchPublicReposResponse } from '@/api/gitRepo';
-import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IGitRepo } from '../../common/interfaces';
 
@@ -65,9 +65,6 @@ export const gitRepoSlice = createSlice({
       state.loading = action.payload;
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase('RESET_GIT_REPO', () => initialState); // Reset to initial state
-  },
 });
 
 export const {
@@ -76,7 +73,5 @@ export const {
   fetchRepositoriesFailure,
   setFetchRepositoriesLoading,
 } = gitRepoSlice.actions;
-
-export const resetGitRepoState = createAction('RESET_GIT_REPO');
 
 export default gitRepoSlice.reducer;
