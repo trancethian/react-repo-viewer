@@ -6,7 +6,11 @@ import { PayloadAction } from '@reduxjs/toolkit';
 
 import { fetchPublicRepos, IFetchPublicReposResponse } from '../../api/gitRepo';
 import { beginCountdownToTime } from '../countdown/slice';
-import { fetchGitSessionSuccess, IGitSessionState } from '../gitSession/slice';
+import {
+  fetchGitSessionRequest,
+  fetchGitSessionSuccess,
+  IGitSessionState,
+} from '../gitSession/slice';
 
 import {
   fetchRepositoriesFailure,
@@ -54,6 +58,7 @@ function* fetchReposSaga(action: PayloadAction<IGitRepoFetchPayload>) {
     if (error instanceof AxiosError) {
       if (error.status == 403) {
         errorType = API_LIMIT_REACHED;
+        yield put(fetchGitSessionRequest());
       }
     }
     yield put(fetchRepositoriesFailure({ type: errorType, error: 'Failed to fetch repositories' }));

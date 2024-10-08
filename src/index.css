@@ -39,7 +39,7 @@
 }
 
 div#root {
-  height: 95vh;
+  height: 91vh;
   display: flex !important;
   flex-direction: column;
 }
