@@ -30,12 +30,18 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
+  font-synthesis: none;
+  overflow: hidden;
   background-image: url('../src/assets/landing-bg.png');
   background-size: cover;
   background-position: center;
-  font-synthesis: none;
-  max-height: 101vh;
-  overflow: hidden;
+  background-repeat: no-repeat;
+}
+
+div#root {
+  height: 95vh;
+  display: flex !important;
+  flex-direction: column;
 }
 
 a {

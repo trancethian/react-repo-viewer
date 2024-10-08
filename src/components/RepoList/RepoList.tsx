@@ -17,7 +17,9 @@ const RepoList = () => {
   const { repositories, loading, error, page, hasMore } = useAppSelector(
     (state: RootState) => state.gitRepo,
   );
-  const { rateRemaining } = useAppSelector((state: RootState) => state.gitSession);
+  const { rateRemaining, rateLimitReached } = useAppSelector(
+    (state: RootState) => state.gitSession,
+  );
 
   const onInputSearch = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -34,6 +36,7 @@ const RepoList = () => {
   const handleScroll = useCallback(
     (e: UIEvent<HTMLDivElement>) => {
       if (
+        !rateLimitReached &&
         hasMore &&
         !loading &&
         e.currentTarget.scrollTop == e.currentTarget.scrollHeight - e.currentTarget.offsetHeight
@@ -41,11 +44,11 @@ const RepoList = () => {
         dispatch(fetchRepositoriesRequest({ searchName: searchRepoName, page: page + 1 }));
       }
     },
-    [dispatch, hasMore, loading, searchRepoName, page],
+    [dispatch, rateLimitReached, hasMore, loading, searchRepoName, page],
   );
 
   return (
-    <div className="mx-auto w-full flex flex-col justify-center max-w-2xl relative mb-4 rounded-lg bg-white py-1 shadow-md max-h-[60vh] sm:max-h-[70vh]">
+    <div className="mx-auto w-full flex flex-col justify-center max-w-2xl relative mb-4 rounded-lg bg-white py-1 shadow-md overflow-hidden">
       <div className="flex items-center rounded-md bg-gray-200 sticky top-0 z-10 m-3 mt-2">
         <div className="pl-2">
           <svg
@@ -91,9 +94,11 @@ const RepoList = () => {
         ) : (
           repositories.map((repo) => <RepoListItem key={repo.id} repo={repo} />)
         )}
-        {repositories.length > 0 && hasMore && <RepoListItemLoader show={loading} />}
+        {!rateLimitReached && repositories.length > 0 && hasMore && (
+          <RepoListItemLoader show={loading} />
+        )}
       </div>
-      {!loading && repositories.length > 0 && hasMore && (
+      {!rateLimitReached && !loading && repositories.length > 0 && hasMore && (
         <div className="animate-bounce absolute mx-auto left-0 right-0 bottom-0 flex justify-center">
           <img src={arrowDownIcon} className="size-6" alt="Scroll down" />
         </div>

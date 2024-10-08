@@ -1,36 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import { Button, Typography } from '@material-tailwind/react';
+import { Typography } from '@material-tailwind/react';
 
 import reactLogo from './assets/react.svg';
-import { parseToDate } from './common/helpers';
-import CustomAlert from './components/common/CustomAlert';
+import RateLimitAlert from './components/RateLimitAlert/RateLimitAlert';
 import RepoList from './components/RepoList/RepoList';
 import SessionInfo from './components/SessionInfo/GitSessionInfo';
-import { API_LIMIT_REACHED } from './constants/api';
 import { fetchGitSessionRequest } from './redux/gitSession/slice';
-import { useAppDispatch, useAppSelector } from './redux/hooks';
-import { RootState } from './redux/store';
+import { useAppDispatch } from './redux/hooks';
 
 import './App.css';
 
 function App() {
   const dispatch = useAppDispatch();
-  const { error } = useAppSelector((state: RootState) => state.gitRepo);
-  const { rateRemaining, rateResetTimestamp } = useAppSelector(
-    (state: RootState) => state.gitSession,
-  );
-  const [rateLimitReached, setRateLimitReached] = useState(false);
 
   useEffect(() => {
-    if (error && error.type == API_LIMIT_REACHED) {
-      setRateLimitReached(true);
-    } else if (rateRemaining !== undefined) {
-      setRateLimitReached(rateRemaining <= 0);
-    } else {
-      setRateLimitReached(false);
-    }
-  }, [rateRemaining, error]);
+    dispatch(fetchGitSessionRequest());
+  }, [dispatch]);
 
   return (
     <>
@@ -59,17 +45,7 @@ function App() {
         Open Source Repositories
       </Typography>
       <div className="mx-auto flex w-full max-w-screen-sm text-left mb-4">
-        <CustomAlert open={rateLimitReached}>
-          <Typography className="font-medium">
-            {"Uh oh! You've hit the Rate Limit. Please try again later."}
-          </Typography>
-          <ul className="my-2 ml-2 list-inside list-disc">
-            {rateResetTimestamp && (
-              <li>You can refresh your limit on {parseToDate(rateResetTimestamp)}</li>
-            )}
-          </ul>
-          <Button onClick={() => dispatch(fetchGitSessionRequest())}>Refresh Limit</Button>
-        </CustomAlert>
+        <RateLimitAlert />
       </div>
       <RepoList />
     </>
